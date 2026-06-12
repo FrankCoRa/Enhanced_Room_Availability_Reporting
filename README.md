@@ -48,7 +48,7 @@ The original report contained room availability windows and room metadata but re
 - Limited scheduling decision support
 - Increased manual effort
 
-## Picture of Before
+## Before Optimization
 
 ![Coursedog_Report](before.jpg)
 
@@ -68,7 +68,7 @@ Schedulers can immediately identify:
 
 without manually reviewing room availability windows.
 
-## Picture of After
+## After Optimization
 
 ![Optimized_Report](after.jpg)
 
