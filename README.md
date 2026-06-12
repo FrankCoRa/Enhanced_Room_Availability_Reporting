@@ -1,45 +1,105 @@
 # Room Availability Report Optimization
 
-## Project Overview
+## Overview
 
-Academic scheduling teams rely on room availability reports to identify available classroom space for course scheduling, event planning, and operational decision-making. While Coursedog provides a Room Availability Report, the exported report required significant manual review and offered limited usability for day-to-day scheduling activities.
+Academic scheduling teams frequently need to identify available classrooms for course scheduling, room reassignments, special events, and operational planning. While Coursedog provides a Room Availability Report, the exported report is primarily designed as a system extract and requires significant manual interpretation before it can support scheduling decisions.
 
-This project enhances the standard Coursedog Room Availability Report through Python-based automation, transforming raw availability data into a structured, scheduler-friendly report that improves room visibility, navigation, and decision-making.
+To improve this process, I developed a Python-based automation solution that transforms raw Coursedog room availability exports into a structured scheduling report aligned with institutional meeting patterns.
 
-The solution was developed within a higher education scheduling environment to support more efficient classroom utilization and reduce manual effort during the scheduling process.
+The solution automatically cleans, validates, and standardizes room availability data while converting free-form availability windows into academic scheduling blocks that are immediately actionable for schedulers.
+
+The result is a more intuitive, searchable, and operationally useful report that improves scheduling efficiency and reduces manual effort.
 
 ---
 
 ## Business Problem
 
-### Background
+Scheduling staff regularly need to answer questions such as:
 
-Academic scheduling requires quickly identifying rooms that are available during standard instructional time blocks. The original Coursedog export provided room availability information but presented several operational challenges.
+- Which rooms are available Tuesday at 10:05 AM?
+- Which classrooms can accommodate a new course section?
+- Which rooms are available for special events?
+- Which rooms can be used when a classroom becomes unavailable?
 
-### Original Report Limitations
+The original workflow required staff to:
 
-| Challenge | Impact |
-|------------|----------|
-| Raw availability ranges | Difficult to determine whether a room was available for a specific class period |
-| Limited filtering capabilities | Increased manual review time |
-| Large volume of room records | Reduced usability |
-| Duplicate room records | Created unnecessary complexity |
-| No direct alignment with academic meeting blocks | Required manual interpretation |
-| Limited visibility into scheduling opportunities | Slower decision-making |
+1. Export the Room Availability Report from Coursedog
+2. Review multiple room records
+3. Interpret raw availability windows
+4. Compare room availability against institutional meeting times
+5. Manually determine whether a room was available
+
+This process was time-consuming, repetitive, and difficult to scale during peak scheduling periods.
 
 ---
 
-## Project Goals
+# Before & After Transformation
 
-The primary objectives of this project were to:
+## Before: Raw Coursedog Availability Report
 
-- Improve visibility of room availability
-- Reduce manual scheduling effort
-- Standardize room availability information
-- Align availability with academic scheduling blocks
-- Improve report readability and usability
-- Create a repeatable automated workflow
-- Support faster scheduling and room assignment decisions
+The original report contained room availability windows and room metadata but required schedulers to manually determine whether a room was available during standard academic meeting periods.
+
+### Challenges
+
+- Availability displayed as raw time ranges
+- Difficult room searches
+- Duplicate room records
+- No alignment with academic scheduling blocks
+- Limited scheduling decision support
+- Increased manual effort
+
+## Picture of Before
+
+> Insert BEFORE screenshot here
+
+---
+
+## After: Optimized Room Availability Report
+
+The enhanced report automatically converts room availability windows into institutional scheduling blocks and presents room availability in a format that directly supports scheduling decisions.
+
+Schedulers can immediately identify:
+
+- Available rooms
+- Available time blocks
+- Building locations
+- Room capacities
+- Scheduling opportunities
+
+without manually reviewing room availability windows.
+
+## Picture of After
+
+> Insert AFTER screenshot here
+
+---
+
+## Key Improvement
+
+### Before
+
+Question:
+
+> Can MT413 support a class from 11:40 AM to 1:00 PM on Friday?
+
+Required:
+
+- Locate the room
+- Review availability windows
+- Compare times manually
+- Determine overlap
+
+### After
+
+Question:
+
+> Can MT413 support a class from 11:40 AM to 1:00 PM on Friday?
+
+Answer:
+
+- Directly visible through an OPEN / BOOKED indicator
+
+The report transforms a manual scheduling task into an immediate decision-support process.
 
 ---
 
@@ -51,29 +111,29 @@ The primary objectives of this project were to:
 
 ## Business Need
 
-Scheduling staff frequently needed to answer questions such as:
+The scheduling office required a faster and more reliable method for identifying available classroom space.
 
-- Which rooms are available on Tuesday at 10:05 AM?
-- Which classrooms can accommodate a new section?
-- What rooms are available for special events?
-- Which rooms should be considered during room reassignment?
+The goal was to convert raw room availability exports into a scheduler-friendly report that could support course scheduling, room reassignment, and event planning decisions.
 
-Answering these questions often required manually reviewing large exports and interpreting availability windows.
+## Project Objectives
 
-The goal was to create a solution that would automatically convert raw room availability data into a more practical scheduling tool.
-
----
+- Improve room availability visibility
+- Reduce manual scheduling effort
+- Standardize room availability information
+- Increase report usability
+- Support faster room assignment decisions
+- Improve operational efficiency
+- Create a repeatable automated workflow
 
 ## Success Criteria
 
 The solution should:
 
-- Reduce manual review time
-- Improve room availability visibility
-- Support scheduling decision-making
-- Produce a reusable report
-- Maintain data accuracy
-- Integrate easily into existing scheduling workflows
+- Reduce manual room analysis
+- Improve report readability
+- Align room availability with instructional meeting patterns
+- Improve scheduling decision-making
+- Produce a reusable reporting process
 
 ---
 
@@ -83,61 +143,34 @@ The solution should:
 
 The original report contained:
 
-- Room identifiers
-- Weekday availability
-- Availability time ranges
+- Room information
 - Building information
-- Room characteristics
-
-However, availability was stored as free-form time ranges, making it difficult to quickly determine whether a room was available during standard academic meeting periods.
+- Room capacity
+- Room type
+- Availability windows
 
 Example:
 
 ```text
-MT413 | Monday | 09:00AM - 05:00PM
+MT413 | Friday | 09:00AM - 05:00PM
 ```
 
-A scheduler still needed to manually determine whether the room was available during:
+Although accurate, the report did not directly indicate whether the room could support standard instructional meeting periods.
 
-- 8:30–9:50
-- 10:05–11:25
-- 11:40–1:00
-- 1:15–2:35
-
-and other institutional meeting blocks.
+Schedulers still needed to manually compare availability windows against course meeting times.
 
 ---
 
-## Operational Challenges
+## Identified Inefficiencies
 
-### Manual Interpretation
-
-Each room required manual comparison between:
-
-- room availability
-- course meeting times
-
-### Large Dataset
-
-The report contained hundreds of room entries across multiple campuses and weekdays.
-
-### Data Quality Issues
-
-The export included:
-
-- duplicate room entries
-- inconsistent formatting
-- rooms hidden from scheduling
-
-### Limited Decision Support
-
-The report answered:
-
-> "When is the room available?"
-
-but not:
-
-> "Can I schedule a class in this room during a standard meeting block?"
+| Challenge | Impact |
+|------------|------------|
+| Raw availability windows | Difficult interpretation |
+| Duplicate room records | Additional review effort |
+| Large room inventories | Reduced usability |
+| No academic block alignment | Slower decision making |
+| Manual room validation | Increased scheduling workload |
+| Limited visibility into scheduling opportunities | Operational inefficiency |
 
 ---
 
@@ -146,10 +179,10 @@ but not:
 The scheduling team required:
 
 - Faster room searches
-- Easier room filtering
-- Consistent room information
-- Availability aligned to instructional periods
-- Improved visibility of available classrooms
+- Better room visibility
+- Availability aligned to institutional meeting blocks
+- Easier filtering and navigation
+- Improved room assignment decision support
 
 ---
 
@@ -157,34 +190,41 @@ The scheduling team required:
 
 ## Technical Solution
 
-A Python-based data processing workflow was developed to automate room availability analysis and standardization.
+A Python-based automation workflow was developed to transform raw room availability exports into a scheduling-ready availability matrix.
 
-The workflow transforms raw Coursedog exports into an enhanced availability matrix aligned with academic scheduling periods.
+The solution automatically:
+
+- Cleans room inventory data
+- Removes duplicates
+- Validates scheduling rooms
+- Parses availability windows
+- Maps availability to instructional time blocks
+- Generates an optimized room availability report
 
 ---
 
 ## Solution Architecture
 
 ```text
-Coursedog Export
-       │
-       ▼
-Data Cleaning
-       │
-       ▼
-Room Validation
-       │
-       ▼
-Availability Parsing
-       │
-       ▼
-Academic Time Block Mapping
-       │
-       ▼
-Availability Matrix Creation
-       │
-       ▼
-Enhanced Room Availability Report
+Coursedog Room Availability Export
+                │
+                ▼
+        Data Cleaning
+                │
+                ▼
+      Room Standardization
+                │
+                ▼
+      Availability Parsing
+                │
+                ▼
+ Academic Time Block Mapping
+                │
+                ▼
+ Availability Matrix Creation
+                │
+                ▼
+ Optimized Scheduling Report
 ```
 
 ---
@@ -193,28 +233,27 @@ Enhanced Room Availability Report
 
 | Technology | Purpose |
 |------------|----------|
-| Python | Automation and processing |
+| Python | Automation |
 | Pandas | Data transformation |
-| Datetime | Time parsing and comparisons |
-| CSV | Data input/output |
+| Datetime | Time parsing and comparison |
+| CSV Processing | Data ingestion and export |
 
 ---
 
-## Key Data Transformations
+## Technical Highlights
 
-### Room Standardization
+### Data Cleaning
 
-The script:
+The script standardizes room inventory data by:
 
-- standardizes room names
-- removes duplicates
-- filters only approved scheduling rooms
-
----
+- Removing duplicate room entries
+- Standardizing room names
+- Filtering rooms hidden from scheduling
+- Validating room records
 
 ### Availability Parsing
 
-Availability windows such as:
+Raw availability windows such as:
 
 ```text
 09:00AM - 05:00PM
@@ -222,13 +261,13 @@ Availability windows such as:
 
 are converted into machine-readable time values.
 
-This allows automated comparison against academic meeting blocks.
+This enables automated comparison against academic scheduling periods.
 
----
+### Academic Time Block Mapping
 
-### Academic Time Block Generation
+The solution evaluates room availability against institutional meeting blocks.
 
-The solution creates standard scheduling blocks such as:
+Examples:
 
 | Block | Time |
 |---------|---------|
@@ -239,53 +278,25 @@ The solution creates standard scheduling blocks such as:
 | S5 | 2:50 PM – 4:10 PM |
 | S6 | 4:20 PM – 5:40 PM |
 
-Additional extended instructional blocks are also evaluated.
-
----
+Additional extended meeting blocks are also supported.
 
 ### Availability Validation Logic
 
-For each room and weekday combination, the system determines:
+For each room and weekday combination, the script determines:
 
 ```text
-Can the room fully support this academic time block?
+Can the room fully support this instructional period?
 ```
 
-The output becomes a simple True/False availability matrix.
+The result becomes a simple OPEN / BOOKED availability matrix.
 
 Example:
 
 | Room | Weekday | S1 | S2 | S3 |
 |--------|---------|----|----|----|
-| MT413 | Monday | True | True | False |
+| MT413 | Friday | OPEN | OPEN | BOOKED |
 
-This format dramatically improves report usability.
-
----
-
-## Key Features
-
-### Automated Data Cleaning
-
-- Removes duplicate room entries
-- Standardizes room names
-- Validates scheduling eligibility
-
-### Availability Slot Optimization
-
-- Converts availability windows into scheduling-friendly blocks
-- Supports both short and long instructional periods
-
-### Enhanced Reporting
-
-- Improves report readability
-- Reduces manual interpretation
-- Simplifies room searches
-
-### Scheduling Decision Support
-
-- Identifies room availability instantly
-- Supports scheduling and event planning activities
+This significantly improves report usability.
 
 ---
 
@@ -293,9 +304,9 @@ This format dramatically improves report usability.
 
 ## Final Deliverable
 
-The final output is an optimized room availability report that converts raw scheduling data into an actionable scheduling resource.
+The final output is an optimized room availability report that converts raw scheduling data into an operational decision-support tool.
 
-Output file:
+Output:
 
 ```text
 room_availability_slots.csv
@@ -308,40 +319,81 @@ room_availability_slots.csv
 ### Operational Improvements
 
 - Reduced manual room availability analysis
-- Improved scheduling workflow efficiency
-- Simplified room reassignment processes
-- Increased visibility into available classroom inventory
+- Faster room assignment decisions
+- Improved room reassignment workflows
+- Increased visibility into classroom inventory
+- Simplified event planning and room selection
 
 ### User Experience Improvements
 
 - Easier navigation
-- Better filtering opportunities
-- Improved readability
+- Improved filtering capabilities
 - Faster room identification
+- Better scheduling support
 
 ### Data Quality Improvements
 
-- Removed duplicate room entries
+- Removed duplicate room records
 - Standardized room information
-- Improved consistency across reports
+- Improved report consistency
+- Increased reliability of scheduling data
 
 ---
 
 ## Business Impact
 
-This solution enables scheduling teams to spend less time interpreting room availability reports and more time making informed scheduling decisions.
+The optimized report transforms a manually intensive scheduling process into a streamlined operational workflow.
 
 ### Benefits
 
 - Faster scheduling decisions
 - Improved room utilization
-- Reduced manual effort
-- Increased operational efficiency
-- Better support for course scheduling and event planning
+- Reduced administrative effort
+- Better support for course scheduling
+- Improved event planning workflows
+- Enhanced operational efficiency
+
+### Example Impact
+
+Instead of manually reviewing availability windows across hundreds of room records, schedulers can now immediately identify available rooms through a scheduling-ready availability matrix.
+
+This allows staff to focus on decision-making rather than report interpretation.
 
 ---
 
-# Future Enhancements
+## Skills Demonstrated
+
+### Data Analytics
+
+- Data Cleaning
+- Data Transformation
+- Process Analysis
+- Operational Analytics
+
+### Python Development
+
+- Automation
+- Data Processing
+- Scheduling Logic
+- Report Generation
+
+### Business Analysis
+
+- Process Improvement
+- Workflow Optimization
+- Stakeholder-Focused Solutions
+- Operational Efficiency
+
+### Higher Education Operations
+
+- Academic Scheduling
+- Room Utilization
+- Resource Planning
+- Scheduling Optimization
+
+---
+
+## Future Enhancements
 
 Potential future improvements include:
 
@@ -351,68 +403,41 @@ Develop a dashboard using:
 
 - Plotly
 - Dash
-- Power BI
 - Tableau
+- Power BI
 
-### Real-Time Availability
+### Real-Time Availability Integration
 
-Connect directly to scheduling data sources for real-time room availability updates.
+Connect directly to scheduling systems for live room availability updates.
 
-### Advanced Search Features
+### Advanced Filtering
 
-Add:
+Add support for:
 
-- campus filters
-- room capacity filters
-- room feature filters
+- Campus filtering
+- Capacity filtering
+- Room feature filtering
+- Building filtering
 
 ### Room Recommendation Engine
 
 Recommend optimal rooms based on:
 
-- availability
-- capacity
-- location
-- room characteristics
+- Availability
+- Capacity
+- Campus
+- Room characteristics
+
+### Scheduling Analytics
+
+Develop room utilization metrics and occupancy analytics to support long-term scheduling decisions.
 
 ---
 
-# Skills Demonstrated
+## Conclusion
 
-This project demonstrates experience in:
+The Room Availability Report Optimization project demonstrates how Python automation and data analytics can improve operational workflows within higher education.
 
-### Data Analytics
+By transforming a raw Coursedog export into a structured scheduling decision-support tool, the solution improves room visibility, reduces manual effort, and enhances scheduling efficiency.
 
-- Data cleaning
-- Data transformation
-- Process analysis
-- Workflow optimization
-
-### Python Development
-
-- Automation scripting
-- Time-based logic
-- Data processing
-- Report generation
-
-### Business Analysis
-
-- Problem identification
-- Process improvement
-- Operational efficiency
-- Stakeholder-focused solutions
-
-### Higher Education Operations
-
-- Academic scheduling
-- Room utilization
-- Resource planning
-- Scheduling optimization
-
----
-
-# Conclusion
-
-The Room Availability Report Optimization project demonstrates how Python automation and data analytics can improve operational workflows in higher education. By transforming a raw scheduling export into a structured decision-support tool, the solution reduces manual effort, improves room visibility, and enhances the overall scheduling process.
-
-This project highlights the intersection of data analytics, automation, and business process improvement to solve a real-world operational challenge.
+This project highlights the practical application of data analytics, automation, and process improvement to solve a real-world operational challenge.
