@@ -50,7 +50,7 @@ The original report contained room availability windows and room metadata but re
 
 ## Picture of Before
 
-> Insert BEFORE screenshot here
+![Coursedog_Report](before.jpg)
 
 ---
 
@@ -70,7 +70,7 @@ without manually reviewing room availability windows.
 
 ## Picture of After
 
-> Insert AFTER screenshot here
+![Optimized_Report](after.jpg)
 
 ---
 
